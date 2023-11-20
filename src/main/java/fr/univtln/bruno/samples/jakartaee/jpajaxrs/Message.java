@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -16,15 +13,16 @@ import java.util.UUID;
 @Table(name = "MESSAGE")
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
+@Builder
 @Getter
 @ToString
 @JsonPropertyOrder({ "id", "content" })
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class Message {
     @Id
-    @GeneratedValue
     @Column(name = "ID")
-    private UUID id;
+    @Builder.Default
+    private UUID id = UUID.randomUUID();
 
     @NotNull
     @Column(name = "CONTENT")
