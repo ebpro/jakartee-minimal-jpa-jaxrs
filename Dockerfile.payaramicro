@@ -1,0 +1,13 @@
+FROM maven:3.9.0-eclipse-temurin-17-focal AS stage-build
+WORKDIR /app
+COPY . ./
+RUN --mount=type=cache,target=/root/.m2 mvn clean verify
+
+FROM payara/micro:6.2023.11-jdk17
+RUN mkdir -p $PAYARA_HOME/libs/ && \
+    wget -O $PAYARA_HOME/libs/database-jdbc-driver.jar https://jdbc.postgresql.org/download/postgresql-42.6.0.jar
+
+COPY --from=stage-build /app/target/*war $DEPLOY_DIR/
+
+ENTRYPOINT java -jar $PAYARA_HOME/payara-micro.jar --addJars $PAYARA_HOME/libs/database-jdbc-driver.jar --deploy $DEPLOY_DIR/*.war
+
