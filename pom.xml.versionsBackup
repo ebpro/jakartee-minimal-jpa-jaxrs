@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>fr.univtln.bruno.samples</groupId>
+	<artifactId>jakartee-minimal-jpa-jaxrs</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Minimal JakartaEE JPA + JAX-RS</name>
+	<description>
+		This is a very simple Jakarta EE application with JPA and JAX-RS.
+	</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.report.sourceEncoding>UTF-8</project.report.sourceEncoding>
+
+		<payara.domainName>domain1</payara.domainName>
+		<payara.version>6.2023.10</payara.version>
+
+		<maven.compiler.release>17</maven.compiler.release>
+
+		<compiler-plugin.version>3.11.0</compiler-plugin.version>
+		<war-plugin.version>3.4.0</war-plugin.version>
+
+		<jakartaee-api.version>10.0.0</jakartaee-api.version>
+		<cargo.version>1.10.7</cargo.version>
+		<jackson-jakarta-rs-json-provider.version>2.16.0</jackson-jakarta-rs-json-provider.version>
+
+		<lombok.version>1.18.30</lombok.version>
+		<logback-classic.version>1.4.14</logback-classic.version>
+
+		<junit-jupiter.version>5.10.1</junit-jupiter.version>
+		<testcontainers.version>1.19.3</testcontainers.version>
+		<rest-assured.version>5.4.0</rest-assured.version>
+		<postgresql.version>42.3.1</postgresql.version>
+		<maven-failsafe-plugin.version>3.2.3</maven-failsafe-plugin.version>
+		<hibernate-core.version>6.4.0.Final</hibernate-core.version>
+		<jackson-datatype-hibernate6.version>2.15.0</jackson-datatype-hibernate6.version>
+	</properties>
+
+	<dependencies>
+		<!-- Jakarta EE -->
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>${jakartaee-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Jackson for JSON in jax-rs -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.jakarta.rs</groupId>
+			<artifactId>jackson-jakarta-rs-json-provider</artifactId>
+			<version>${jackson-jakarta-rs-json-provider.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Log: SLF4J with logBack -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback-classic.version}</version>
+		</dependency>
+
+		<!-- Tests -->
+
+		<!-- the test framework Junit 5 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit-jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Integration tests with testcontainers -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Testing rest services with a fluent high API -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>${rest-assured.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate6</artifactId>
+			<version>${jackson-datatype-hibernate6.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>jakartaee-minimal-jpa-jaxrs</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${war-plugin.version}</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.postgresql</groupId>
+									<artifactId>postgresql</artifactId>
+									<version>${postgresql.version}</version>
+									<destFileName>postgresql.jar</destFileName>
+									<outputDirectory>${project.build.directory}/jdbc-drivers</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

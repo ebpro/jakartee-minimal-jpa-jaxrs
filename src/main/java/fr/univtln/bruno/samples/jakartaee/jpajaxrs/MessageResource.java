@@ -1,6 +1,8 @@
 package fr.univtln.bruno.samples.jakartaee.jpajaxrs;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import fr.univtln.bruno.samples.jakartaee.jpajaxrs.repository.Message;
+import fr.univtln.bruno.samples.jakartaee.jpajaxrs.repository.MessageDAO;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -8,10 +10,11 @@ import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Path("messages")
-@ApplicationScoped
+@RequestScoped
 public class MessageResource {
 	@Inject
 	private MessageDAO messageDAO;
@@ -30,7 +33,7 @@ public class MessageResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(Message message) {
 		log.info("REST request to update message : {}", message);
-		messageDAO.edit(message);
+		messageDAO.update(message);
 		return Response.ok(message).build();
 	}
 
@@ -43,8 +46,8 @@ public class MessageResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/{id}")
-	public Response find(@PathParam("id") Long id) {
+	@Path("{id}")
+	public Response find(@PathParam("id") UUID id) {
 		log.info("REST request to get message : {}", id);
 		Message person = messageDAO.find(id);
 		if (person == null) {
@@ -55,10 +58,10 @@ public class MessageResource {
 	}
 
 	@DELETE
-	@Path("/{id}")
-	public Response removePerson(@PathParam("id") Long id) {
+	@Path("{id}")
+	public Response remove(@PathParam("id") UUID id) {
 		log.info("REST request to delete Person : {}", id);
-		messageDAO.remove(messageDAO.find(id));
+		messageDAO.delete(messageDAO.find(id));
 		return Response.ok().build();
 	}
 }

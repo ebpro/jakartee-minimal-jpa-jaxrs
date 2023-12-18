@@ -1,97 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>fr.univtln.bruno.samples</groupId>
-	<artifactId>jakartee-minimal-jpa-jaxrs</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
-	<packaging>war</packaging>
+    <groupId>fr.univtln.bruno.samples</groupId>
+    <artifactId>jakartee-minimal-jpa-jaxrs</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
-	<name>Minimal JakartaEE JPA + JAX-RS</name>
-	<description>
-		This is a very simple Jakarta EE application with JPA and JAX-RS.
-	</description>
+    <name>Minimal JakartaEE JPA + JAX-RS</name>
+    <description>
+        This is a very simple Jakarta EE application with JPA and JAX-RS.
+    </description>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.report.sourceEncoding>UTF-8</project.report.sourceEncoding>
-		<maven.compiler.release>17</maven.compiler.release>
-		<jakartaee-api.version>10.0.0</jakartaee-api.version>
-		<payara.version>6.2023.10</payara.version>
-		<compiler-plugin.version>3.11.0</compiler-plugin.version>
-		<war-plugin.version>3.3.2</war-plugin.version>
-		<cargo.version>1.10.7</cargo.version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.report.sourceEncoding>UTF-8</project.report.sourceEncoding>
 
-		<payara.domainName>domain1</payara.domainName>
-	</properties>
+        <cargo.remote.username>admin</cargo.remote.username>
+        <cargo.remote.password>admin</cargo.remote.password>
+        <cargo.glassfish.admin.port>4848</cargo.glassfish.admin.port>
+        <cargo.hostname>localhost</cargo.hostname>
 
-	<dependencies>
-		<dependency>
-			<groupId>jakarta.platform</groupId>
-			<artifactId>jakarta.jakartaee-api</artifactId>
-			<version>${jakartaee-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
+        <jakartaee-api.version>10.0.0</jakartaee-api.version>
+        <payara.domainName>domain1</payara.domainName>
+        <payara.version>6.2023.10</payara.version>
 
-		<dependency>
-			<groupId>com.fasterxml.jackson.jakarta.rs</groupId>
-			<artifactId>jackson-jakarta-rs-json-provider</artifactId>
-			<version>2.15.3</version>
-		</dependency>
+        <maven.compiler.release>17</maven.compiler.release>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.30</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- SLF4J with logBack -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>2.0.9</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.4.11</version>
-		</dependency>
+        <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <war-plugin.version>3.4.0</war-plugin.version>
 
-	</dependencies>
+        <lombok.version>1.18.30</lombok.version>
+        <logback-classic.version>1.4.14</logback-classic.version>
 
-	<build>
-		<finalName>jakartaee-minimal-jpa-jaxrs</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${compiler-plugin.version}</version>
-			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>${war-plugin.version}</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
+        <junit-jupiter.version>5.10.1</junit-jupiter.version>
+        <testcontainers.version>1.19.3</testcontainers.version>
+        <rest-assured.version>5.4.0</rest-assured.version>
+        <postgresql.version>42.7.1</postgresql.version>
+        <maven-failsafe-plugin.version>3.2.3</maven-failsafe-plugin.version>
 
-				<!-- Execute 'mvn clean package cargo:run' to run the application. -->
-				<plugin>
-					<groupId>org.codehaus.cargo</groupId>
-					<artifactId>cargo-maven3-plugin</artifactId>
-					<version>${cargo.version}</version>
-					<configuration>
-						<container>
-							<containerId>payara</containerId>
-							<artifactInstaller>
-								<groupId>fish.payara.distributions</groupId>
-								<artifactId>payara</artifactId>
-								<version>${payara.version}</version>
-							</artifactInstaller>
-						</container>
-					</configuration>
-				</plugin>
-		</plugins>
-	</build>
+        <hibernate.version>6.4.1.Final</hibernate.version>
 
+        <jackson-json.version>2.16.0</jackson-json.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-platform</artifactId>
+                <version>${hibernate.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-json.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Jakarta EE -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>${jakartaee-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Log: SLF4J with logBack -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
+        </dependency>
+
+        <!-- Tests -->
+
+        <!-- the test framework Junit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Integration tests with testcontainers -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Testing rest services with a fluent high API -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <!--dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+        </dependency-->
+        <!--dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-hibernate6</artifactId>
+    </dependency-->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>jakartaee-minimal-jpa-jaxrs</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${war-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>

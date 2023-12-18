@@ -5,4 +5,15 @@
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+
+	<!--data-source>
+		<name>java:app/jdbc/TestDB</name>
+		<class-name>org.postgresql.ds.PGSimpleDataSource</class-name>
+		<server-name>${ENV=DB_HOST}</server-name>
+		<port-number>5432</port-number>
+		<database-name>${ENV=DB_NAME}</database-name>
+
+		<user>${ENV=DB_USERNAME}</user>
+		<password>${ENV=DB_PASSWORD}</password>
+	</data-source-->
 </web-app>

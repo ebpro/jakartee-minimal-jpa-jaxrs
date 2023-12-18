@@ -2,28 +2,13 @@
 
 ## Launch
 
-```
-./mvnw clean package cargo:run
-```
-The [Maven Wrapper](https://maven.apache.org/wrapper/) is already included in the project, so a Maven install is not actually needed. 
-You may first need to execute `chmod +x mvnw`.
-
-Once the runtime starts, you can access the project at http://localhost:8080/jakartaee-minimal-jpa-jaxrs/.
-
-You can also run the project via [Docker](https://docs.docker.com/get-docker/). 
+Build and launch with [Docker Compose](https://docs.docker.com/compose/): payara micro + postgresql. See .env file for configuration.
 
 ```
-./mvnw clean package
-docker build -t jakartaee-minimal-jpa-jaxrs:0.1.0 .
+docker compose up --build --daemon
 ```
 
-You can then run the Docker image by executing:
-
-```
-docker run -it --rm -p 8080:8080 jakartaee-minimal-jpa-jaxrs:0.1.0
-```
-
-Once the runtime starts, you can access the project at http://localhost:8080/jakartaee-hello-world.
+Once the runtime is started, you can access the project at http://localhost:8080/jakartaee-hello-world.
 
 ## Usage
 
@@ -38,4 +23,30 @@ curl -X GET \
   -d '{"Message":{"content":"Testjij"}}' \
   localhost:8080/jakartaee-minimal-jpa-jaxrs/api/messages
 ```
+
+## Development
+
+Build and launch with [Docker Compose](https://docs.docker.com/compose/): payara full + postgresql.
+See .env file for configuration.
+
+```
+STAGE=dev docker compose up --build --daemon
+```
+
+Compile and redeploy with [Maven](https://maven.apache.org/):
+
+```
+./mvnw verify
+```
+
+The [Maven Wrapper](https://maven.apache.org/wrapper/) is already included in the project,
+so Maven install is not needed. 
+You may first need to execute `chmod +x mvnw`.
+
+Integration tests are orchestrated with [testcontainers docker compose module](https://java.testcontainers.org/modules/docker_compose/).
+
+Rest services are tested with [Rest Assured](https://rest-assured.io/).
+
+
+
 

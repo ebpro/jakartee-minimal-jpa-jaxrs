@@ -1,0 +1,28 @@
+
+
+###
+GET http://localhost:8080/jakartaee-minimal-jpa-jaxrs/api/v1/messages
+Accept: application/json
+
+###
+GET http://localhost:8080/jakartaee-minimal-jpa-jaxrs/api/v1/messages/42b4f0fd-5482-4fac-a63b-1c524b2101b1
+Accept: application/json
+
+###
+POST http://localhost:8080/jakartaee-minimal-jpa-jaxrs/api/v1/messages
+Content-Type: application/json
+
+{
+  "@type": "Message",
+  "content": "a new message."
+}
+
+###
+PUT http://localhost:8080/jakartaee-minimal-jpa-jaxrs/api/v1/messages/
+Content-Type: application/json
+
+{
+  "@type": "Message",
+  "id": "980bed12-996d-4e11-ae3b-991d9521766f",
+  "content": "another useless message. (MODIFIED)"
+}

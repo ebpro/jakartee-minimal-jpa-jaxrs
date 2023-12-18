@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    extends:
+      file: base-docker-compose.yml
+      service: db
+    volumes:
+      - jeeminimal-pg-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    ports:
+      - "5432:5432"
+
+  app:
+    extends:
+      file: base-docker-compose.yml
+      service: app
+    ports:
+      - "8080:8080"
+      - "4848:4848"
+    networks:
+      - frontend
+      - backend
+
+volumes:
+  jeeminimal-pg-data:
+
+networks:
+  frontend:
+  backend:

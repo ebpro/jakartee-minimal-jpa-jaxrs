@@ -1,8 +1,10 @@
 package fr.univtln.bruno.samples.jakartaee.jpajaxrs;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Provider;
 
@@ -22,11 +24,12 @@ public class ObjectMapperContextResolver implements ContextResolver<ObjectMapper
 
     private ObjectMapper createObjectMapper() {
         ObjectMapper newMapper = new ObjectMapper();
-        newMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        newMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        newMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        newMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-        newMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        newMapper.findAndRegisterModules();
+        newMapper.registerModule(new ParameterNamesModule())
+                .registerModule(new Jdk8Module())
+                .registerModule(new JavaTimeModule());
+        newMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .disable(SerializationFeature.INDENT_OUTPUT);
         return newMapper;
     }
 }
