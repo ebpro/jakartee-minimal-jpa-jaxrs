@@ -12,17 +12,7 @@ Once the runtime is started, you can access the project at http://localhost:8080
 
 ## Usage
 
-```bash
-curl -X GET \
-  localhost:8080/jakartaee-minimal-jpa-jaxrs/api/messages
-```
-
-```bash
- curl -X POST  \
-  -H "Content-Type: application/json"  \
-  -d '{"Message":{"content":"Testjij"}}' \
-  localhost:8080/jakartaee-minimal-jpa-jaxrs/api/messages
-```
+See `test.rest` file for examples of usage with REST.
 
 ## Development
 
