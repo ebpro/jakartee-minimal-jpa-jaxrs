@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: 'postgres:15.2-alpine'
+    environment:
+      - "POSTGRES_USER=${DB_USERNAME}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD}"
+      - "POSTGRES_DB=${DB_NAME}"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+  app:
+    image: 'brunoe/jakartaee-minimal-jpa-jaxrs:0.1.0'
+    build:
+      dockerfile: docker/Dockerfile
+      context: .
+      target: ${STAGE}
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - "DB_DRIVERCLASSNAME=${DB_DRIVERCLASSNAME}"
+      - "DB_JDBC_URL=${DB_JDBC_URL}"
+      - "DB_USERNAME=${DB_USERNAME}"
+      - "DB_PASSWORD=${DB_PASSWORD}"
+      - "DB_NAME=${DB_NAME}"
+

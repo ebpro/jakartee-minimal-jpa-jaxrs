@@ -1,0 +1,36 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- Test containers -->
+    <logger name="org.testcontainers" level="INFO"/>
+    <logger name="tc" level="INFO"/>
+    <logger name="tc.payara/micro:6.2023.11-jdk17" level="DEBUG"/>
+    <logger name="com.github.dockerjava" level="WARN"/>
+    <logger name="com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.wire" level="OFF"/>
+
+    <!-- Hibernate after 6 -->
+    <logger name="org.hibernate.SQL" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.orm.jdbc.bind" level="trace" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.stat" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.SQL_SLOW" level="info" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.cache" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+</configuration>

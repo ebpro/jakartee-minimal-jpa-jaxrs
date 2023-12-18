@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
-             version="3.0">
-    <persistence-unit name="TestUnit" transaction-type="JTA">
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+
+    <persistence-unit name="MainPU" transaction-type="JTA">
         <description>A sample test persistence unit.</description>
-        <jta-data-source>java:app/jdbc/TestDB</jta-data-source>
+        <!--provider>org.eclipse.persistence.jpa.PersistenceProvider</provider-->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>java:global/MyAppDS</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <!-- cache only the entities annotated with @Cacheable or @Cacheable(true) -->
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="jakarta.persistence.sql-load-script-source" value="data.sql"/>
-            <property name="eclipselink.logging.level" value="FINEST"/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+
+            <!-- Temporarily disable the enhancer to avoid a bug in Hibernate and Payara -->
+            <property name="hibernate.enhancer.enableDirtyTracking" value="false"/>
+            <property name="hibernate.enhancer.enableLazyInitialization" value="false"/>
+
+            <property name="hibernate.type.xml_format_mapper" value="jaxb"/>
         </properties>
     </persistence-unit>
+
 </persistence>

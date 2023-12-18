@@ -6,7 +6,7 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
-	<data-source>
+	<!--data-source>
 		<name>java:app/jdbc/TestDB</name>
 		<class-name>org.postgresql.ds.PGSimpleDataSource</class-name>
 		<server-name>${ENV=DB_HOST}</server-name>
@@ -15,5 +15,5 @@
 
 		<user>${ENV=DB_USERNAME}</user>
 		<password>${ENV=DB_PASSWORD}</password>
-	</data-source>
+	</data-source-->
 </web-app>

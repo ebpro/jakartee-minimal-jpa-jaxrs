@@ -1,5 +1,7 @@
 package fr.univtln.bruno.samples.jakartaee.jpajaxrs;
 
+import fr.univtln.bruno.samples.jakartaee.jpajaxrs.repository.Message;
+import fr.univtln.bruno.samples.jakartaee.jpajaxrs.repository.MessageDAO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Initialized;
 import jakarta.enterprise.event.Observes;
@@ -17,6 +19,6 @@ public class CDIInitializerOnStart {
 
     public void onStart(@Observes @Initialized(ApplicationScoped.class) Object object) {
         log.info("Init CDI singleton");
-        messageDAO.create(Message.of(UUID.randomUUID(),"Test message from initialisation singleton."));
+        messageDAO.create(Message.of("Test message from initialisation singleton."));
     }
 }
