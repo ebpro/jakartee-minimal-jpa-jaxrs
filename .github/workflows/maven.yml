@@ -23,16 +23,39 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
     - name: Build with Maven
       run: ./mvnw -B verify --file pom.xml
+
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v4.3.2
+      # build the project in a docker container with a specific maven settings.xml
+      # it uses env variables from GitHub secrets for the credentials
+      # to GitHub, dockerhub and sonar.
+    - name: run sonar with Maven in docker
+      run: |
+          ./mvnw sonar:sonar \
+              -Dsonar.branch.name=${{ env.GITHUB_REF_SLUG }} \
+              -DskipTests=true \
+              -Dsonar.language=java \
+              -Dsonar.report.export.path=sonar-report.json \
+              -Dsonar.host.url=${{ env.SONAR_URL }} \
+              -Dsonar.login=${{ env.SONAR_TOKEN }} \
+              -Dsonar.qualitygate.wait=true
+      shell: bash
+
     - name: Extract Maven project version
-      run: echo VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> "$GITHUB_ENV"
+      run: echo VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> "$GITHUB_ENV"
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
