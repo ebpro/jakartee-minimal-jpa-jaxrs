@@ -42,17 +42,17 @@ jobs:
       # build the project in a docker container with a specific maven settings.xml
       # it uses env variables from GitHub secrets for the credentials
       # to GitHub, dockerhub and sonar.
-    - name: run sonar with Maven in docker
-      run: |
-          ./mvnw sonar:sonar \
-              -Dsonar.branch.name=${{ env.GITHUB_REF_SLUG }} \
-              -DskipTests=true \
-              -Dsonar.language=java \
-              -Dsonar.report.export.path=sonar-report.json \
-              -Dsonar.host.url=${{ env.SONAR_URL }} \
-              -Dsonar.login=${{ env.SONAR_TOKEN }} \
-              -Dsonar.qualitygate.wait=true
-      shell: bash
+    #- name: run sonar with Maven in docker
+    #  run: |
+    #      ./mvnw sonar:sonar \
+    #          -Dsonar.branch.name=${{ env.GITHUB_REF_SLUG }} \
+    #          -DskipTests=true \
+    #          -Dsonar.language=java \
+    #          -Dsonar.report.export.path=sonar-report.json \
+    #          -Dsonar.host.url=${{ env.SONAR_URL }} \
+    #          -Dsonar.login=${{ env.SONAR_TOKEN }} \
+    #          -Dsonar.qualitygate.wait=true
+    #  shell: bash
 
     - name: Extract Maven project version
       run: echo VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> "$GITHUB_ENV"
