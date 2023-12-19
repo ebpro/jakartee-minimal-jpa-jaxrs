@@ -37,11 +37,6 @@ public class MessageResource {
 	}
 
 	@GET
-	public String helloWorld() {
-		return "Hello World!";
-	}
-
-	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findAll() {
 		log.info("REST request to get all messages");

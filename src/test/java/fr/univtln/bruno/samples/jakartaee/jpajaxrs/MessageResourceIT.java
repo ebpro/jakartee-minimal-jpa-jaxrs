@@ -30,7 +30,7 @@ class MessageResourceIT {
 
     private static int APP_SERVER_PORT = 8080;
 
-    //We first start teh services with base-docker-compose.yml (without ports mapping and named volumes).
+    //We first start the services with base-docker-compose.yml (without ports mapping and named volumes).
     @Container
     static final ComposeContainer environment =
             new ComposeContainer(new File("base-docker-compose.yml"))
@@ -38,7 +38,8 @@ class MessageResourceIT {
                     .withLogConsumer("app-1",new Slf4jLogConsumer(log))
                     .withExposedService("app-1", APP_SERVER_PORT)
                     .withBuild(true)
-                    .waitingFor("app-1", Wait.forHttp("/jakartaee-minimal-jpa-jaxrs/api/v1/application.wadl")
+                    .waitingFor("app-1",
+                            Wait.forHttp("/jakartaee-minimal-jpa-jaxrs/api/v1/application.wadl")
                             .forStatusCode(200));
 
     //We setup the base query for rest-assured
