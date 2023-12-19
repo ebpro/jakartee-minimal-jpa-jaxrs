@@ -14,7 +14,7 @@ services:
       retries: 10
 
   app:
-    image: 'brunoe/jakartaee-minimal-jpa-jaxrs:0.1.0'
+    image: 'brunoe/jpajaxrs:latest'
     build:
       dockerfile: docker/Dockerfile
       context: .
