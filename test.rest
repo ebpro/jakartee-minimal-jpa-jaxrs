@@ -1,3 +1,4 @@
+OPTIONS http://localhost:8080/jakartaee-minimal-jpa-jaxrs/api/v1/messages
 
 
 ###

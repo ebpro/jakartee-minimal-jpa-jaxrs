@@ -1,4 +1,4 @@
-package fr.univtln.bruno.samples.jakartaee.jpajaxrs;
+package fr.univtln.bruno.samples.jakartaee.jpajaxrs.restapi;
 
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.ws.rs.ApplicationPath;

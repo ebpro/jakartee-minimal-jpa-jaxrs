@@ -1,4 +1,4 @@
-package fr.univtln.bruno.samples.jakartaee.jpajaxrs;
+package fr.univtln.bruno.samples.jakartaee.jpajaxrs.restapi;
 
 import fr.univtln.bruno.samples.jakartaee.jpajaxrs.repository.Message;
 import fr.univtln.bruno.samples.jakartaee.jpajaxrs.repository.MessageDAO;
@@ -9,11 +9,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@Path("messages")
+@Path("/messages")
 @RequestScoped
 public class MessageResource {
 	@Inject
@@ -38,10 +37,15 @@ public class MessageResource {
 	}
 
 	@GET
+	public String helloWorld() {
+		return "Hello World!";
+	}
+
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Message> findAll() {
+	public Response findAll() {
 		log.info("REST request to get all messages");
-		return messageDAO.findAll();
+		return Response.ok(messageDAO.findAll()).build();
 	}
 
 	@GET

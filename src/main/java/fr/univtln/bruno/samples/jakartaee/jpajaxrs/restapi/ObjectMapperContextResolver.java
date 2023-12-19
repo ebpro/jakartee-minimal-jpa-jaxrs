@@ -1,4 +1,4 @@
-package fr.univtln.bruno.samples.jakartaee.jpajaxrs;
+package fr.univtln.bruno.samples.jakartaee.jpajaxrs.restapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
