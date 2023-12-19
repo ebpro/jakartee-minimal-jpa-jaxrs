@@ -44,6 +44,7 @@
 
         <jackson-json.version>2.16.0</jackson-json.version>
 
+        <gitflow-maven-plugin.version>1.20.0</gitflow-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -203,6 +204,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>${gitflow-maven-plugin.version}</version>
+                <configuration>
+                    <!-- optional configuration -->
+                </configuration>
             </plugin>
 
         </plugins>
