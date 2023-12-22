@@ -9,6 +9,8 @@ services:
       - jeeminimal-pg-data:/var/lib/postgresql/data
     networks:
       - backend
+    ports:
+      - "${DB_PORT:5432}:5432"
 
   app:
     extends:
@@ -19,7 +21,8 @@ services:
       context: .
       target: ${STAGE}
     ports:
-      - "${APP_PORT}:8080"
+      - "8080:8080"
+      - "4848:4848"
     networks:
       - frontend
       - backend

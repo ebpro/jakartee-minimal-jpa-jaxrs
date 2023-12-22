@@ -14,11 +14,7 @@ services:
       retries: 10
 
   app:
-    image: 'brunoe/jpajaxrs:latest'
-    build:
-      dockerfile: docker/Dockerfile
-      context: .
-      target: ${STAGE}
+    image: "brunoe/jakartee-minimal-jpa-jaxrs:${TAG}"
     depends_on:
       db:
         condition: service_healthy
@@ -28,4 +24,3 @@ services:
       - "DB_USERNAME=${DB_USERNAME}"
       - "DB_PASSWORD=${DB_PASSWORD}"
       - "DB_NAME=${DB_NAME}"
-

@@ -20,7 +20,7 @@ Build and launch with [Docker Compose](https://docs.docker.com/compose/): payara
 See .env file for configuration.
 
 ```
-STAGE=dev docker compose up --build --daemon
+STAGE=dev TAG=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) APP_PORT=8081 docker compose up --build --daemon
 ```
 
 Compile and redeploy with [Maven](https://maven.apache.org/):

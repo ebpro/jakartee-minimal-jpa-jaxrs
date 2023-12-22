@@ -30,10 +30,11 @@ class MessageResourceIT {
 
     private static int APP_SERVER_PORT = 8080;
 
-    //We first start the services with base-docker-compose.yml (without ports mapping and named volumes).
+    //We first start the services with base-docker-compose-build.yml (without ports mapping and named volumes).
     @Container
     static final ComposeContainer environment =
-            new ComposeContainer(new File("base-docker-compose.yml"))
+            new ComposeContainer(new File("docker-compose-ci.yml"))
+                    .withEnv("TAG", "test")
                     .withRemoveVolumes(true)
                     .withLogConsumer("app-1",new Slf4jLogConsumer(log))
                     .withExposedService("app-1", APP_SERVER_PORT)

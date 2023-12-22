@@ -1,12 +1,4 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Java CI with Maven
+name: Java CI with Docker and Maven
 
 on:
   push:
@@ -38,23 +30,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-
-    - name: Build with Maven
-      run: ./mvnw -B verify --file pom.xml
-
-    - name: Inject slug/short variables
-      uses: rlespinasse/github-slug-action@v4.3.2
-      # build the project in a docker container with a specific maven settings.xml
-      # it uses env variables from GitHub secrets for the credentials
-      # to GitHub, dockerhub and sonar.
-    - name: run sonar with Maven in docker
-      run: |
-          ./mvnw sonar:sonar \
-              -Dsonar.branch.name=${{ env.GITHUB_REF_SLUG }} \
-              -DskipTests=true \
-
     - name: Extract Maven project version
       run: echo VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> "$GITHUB_ENV"
+
+    # The project is built and unit tested with docker
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
@@ -62,12 +41,29 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-    - name: Build and push
+    - name: Build and load docker image
+      uses: docker/build-push-action@v5
+      with:
+        file: docker/Dockerfile
+        load: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GITHUB_REPOSITORY##*/ }}:test
+
+    # After integration tests, the project is analyzed with Sonar
+    - name: Check quality
+      run: ./mvnw -B verify --file pom.xml
+    - name: run sonar with Maven in docker
+      run: |
+        ./mvnw verify
+        ./mvnw sonar:sonar \
+            -Dsonar.branch.name=${GITHUB_REF##*/} \
+            -DskipTests=true \
+
+    - name: Push docker image
       uses: docker/build-push-action@v5
       with:
         file: docker/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/jpajaxrs:${{ env.VERSION }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GITHUB_REPOSITORY##*/ }}:${{ env.VERSION }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
