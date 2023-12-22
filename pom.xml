@@ -5,7 +5,7 @@
 
     <groupId>fr.univtln.bruno.samples</groupId>
     <artifactId>jakartee-minimal-jpa-jaxrs</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0-betterci-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>Minimal JakartaEE JPA + JAX-RS</name>
@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.report.sourceEncoding>UTF-8</project.report.sourceEncoding>
 
-        <project.build.outputTimestamp>2023-01-01T00:00:00Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2023-12-22T11:03:08Z</project.build.outputTimestamp>
 
         <!-- Jakarta EE -->
         <jakartaee-api.version>10.0.0</jakartaee-api.version>
