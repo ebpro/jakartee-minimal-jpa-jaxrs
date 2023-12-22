@@ -1,0 +1,7 @@
+.github
+.idea
+.dockerignore
+.docker
+.env
+.docker-compose*
+*.iml
