@@ -46,7 +46,7 @@ jobs:
       with:
         file: docker/Dockerfile
         load: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GITHUB_REPOSITORY##*/ }}:test
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/jakartaee-minimal-jpa-jaxrs:test
 
     # After integration tests, the project is analyzed with Sonar
     - name: Check quality
@@ -63,7 +63,7 @@ jobs:
       with:
         file: docker/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.GITHUB_REPOSITORY##*/ }}:${{ env.VERSION }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/jakartaee-minimal-jpa-jaxrs:${{ env.VERSION }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
