@@ -24,14 +24,8 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
     - name: Extract Maven project version
-      run: echo VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> "$GITHUB_ENV"
+      run: echo VERSION=$(./mvnw-docker.sh -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec) >> "$GITHUB_ENV"
 
     # The project is built and unit tested with docker
     - name: Login to Docker Hub
@@ -48,13 +42,11 @@ jobs:
         load: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/jakartaee-minimal-jpa-jaxrs:test
 
-    # After integration tests, the project is analyzed with Sonar
-    - name: Check quality
-      run: ./mvnw -B verify --file pom.xml
-    - name: run sonar with Maven in docker
+    - name: Compile, package and test.
+      run: ./mvnw-docker.sh -B clean verify
+    - name: Check quality with sonarqube
       run: |
-        ./mvnw verify
-        ./mvnw sonar:sonar \
+        ./mvnw-docker.sh sonar:sonar \
             -Dsonar.branch.name=${GITHUB_REF##*/} \
             -DskipTests=true \
 

@@ -22,9 +22,6 @@ services:
       - frontend
       - backend
 
-volumes:
-  jeeminimal-pg-data:
-
 networks:
   frontend:
   backend:

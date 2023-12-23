@@ -30,7 +30,7 @@ class MessageResourceIT {
 
     private static int APP_SERVER_PORT = 8080;
 
-    //We first start the services with base-docker-compose-build.yml (without ports mapping and named volumes).
+    //We first start the services with base-docker-compose-dev.yml (without ports mapping and named volumes).
     @Container
     static final ComposeContainer environment =
             new ComposeContainer(new File("docker-compose-ci.yml"))
@@ -43,7 +43,7 @@ class MessageResourceIT {
                             Wait.forHttp("/jakartaee-minimal-jpa-jaxrs/api/v1/application.wadl")
                             .forStatusCode(200));
 
-    //We setup the base query for rest-assured
+    //We set up the base query for rest-assured
     @BeforeAll
     static void setUp() {
         //RestAssured.baseURI = "http://" + appServerContainer.getHost() + ":" + appServerContainer.getMappedPort(APP_SERVER_PORT);

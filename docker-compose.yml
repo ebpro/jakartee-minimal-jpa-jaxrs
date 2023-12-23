@@ -6,7 +6,7 @@ services:
       file: docker-compose.base.yml
       service: db
     volumes:
-      - jeeminimal-pg-data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
     networks:
       - backend
 
@@ -19,13 +19,13 @@ services:
       context: .
       target: ${STAGE}
     ports:
-      - "${APP_PORT}:8080"
+      - "${APP_PORT:8080}:8080"
     networks:
       - frontend
       - backend
 
 volumes:
-  jeeminimal-pg-data:
+  pg-data:
 
 networks:
   frontend:
