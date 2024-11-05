@@ -5,7 +5,7 @@
 Build and launch with [Docker Compose](https://docs.docker.com/compose/): payara micro + postgresql. See .env file for configuration.
 
 ```
-docker compose up --build --daemon
+docker compose up --build --detach
 ```
 
 Once the runtime is started, you can access the project at http://localhost:8080/jakartaee-hello-world.
@@ -20,7 +20,7 @@ Build and launch with [Docker Compose](https://docs.docker.com/compose/): payara
 See .env file for configuration.
 
 ```
-STAGE=dev docker compose up --build --daemon
+STAGE=dev docker compose up --build --detach
 ```
 
 Compile and redeploy with [Maven](https://maven.apache.org/):
