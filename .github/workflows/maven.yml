@@ -43,7 +43,7 @@ jobs:
       run: ./mvnw -B verify --file pom.xml
 
     - name: Inject slug/short variables
-      uses: rlespinasse/github-slug-action@v4.3.2
+      uses: rlespinasse/github-slug-action@v4.4.1
       # build the project in a docker container with a specific maven settings.xml
       # it uses env variables from GitHub secrets for the credentials
       # to GitHub, dockerhub and sonar.
